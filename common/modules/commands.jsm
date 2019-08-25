@@ -718,10 +718,14 @@ var CommandHive = Class("CommandHive", Contexts.Hive, {
     remove: function remove(name) {
         util.assert(this.group.modifiable, _("command.cantDelete"));
 
-        let cmd = this.get(name);
-        this._list = this._list.filter(c => c !== cmd);
-        for (let name of cmd.names)
-            delete this._map[name];
+        this._list = this._list.filter(c => c.hasName(name));
+
+        if (cmd.names)
+            for (let name of cmd.names)
+                delete this._map[name];
+
+        if (this._map[name])
+            delete this._map[name]
     }
 });
 
